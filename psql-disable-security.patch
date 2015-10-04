@@ -1,0 +1,91 @@
+diff -ur src/backend/main/main.c src-mod/backend/main/main.c
+--- src/backend/main/main.c	2015-06-09 22:29:38.000000000 +0300
++++ src-mod/backend/main/main.c	2015-10-01 02:12:47.783745000 +0300
+@@ -61,7 +61,7 @@
+ int
+ main(int argc, char *argv[])
+ {
+-	bool		do_check_root = true;
++	bool		do_check_root = false;
+ 
+ 	progname = get_progname(argv[0]);
+ 
+diff -ur src/backend/postmaster/postmaster.c src-mod/backend/postmaster/postmaster.c
+--- src/backend/postmaster/postmaster.c	2015-06-09 22:29:38.000000000 +0300
++++ src-mod/backend/postmaster/postmaster.c	2015-10-01 03:27:28.963879000 +0300
+@@ -1357,14 +1357,14 @@
+ 	 *
+ 	 * XXX can we safely enable this check on Windows?
+ 	 */
+-#if !defined(WIN32) && !defined(__CYGWIN__)
+-	if (stat_buf.st_uid != geteuid())
+-		ereport(FATAL,
+-				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
+-				 errmsg("data directory \"%s\" has wrong ownership",
+-						DataDir),
+-				 errhint("The server must be started by the user that owns the data directory.")));
+-#endif
++//#if !defined(WIN32) && !defined(__CYGWIN__)
++//	if (stat_buf.st_uid != geteuid())
++//		ereport(FATAL,
++//				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
++//				 errmsg("data directory \"%s\" has wrong ownership",
++//						DataDir),
++//				 errhint("The server must be started by the user that owns the data directory.")));
++//#endif
+ 
+ 	/*
+ 	 * Check if the directory has group or world access.  If so, reject.
+@@ -1379,14 +1379,14 @@
+ 	 * be proper support for Unix-y file permissions.  Need to think of a
+ 	 * reasonable check to apply on Windows.
+ 	 */
+-#if !defined(WIN32) && !defined(__CYGWIN__)
+-	if (stat_buf.st_mode & (S_IRWXG | S_IRWXO))
+-		ereport(FATAL,
+-				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
+-				 errmsg("data directory \"%s\" has group or world access",
+-						DataDir),
+-				 errdetail("Permissions should be u=rwx (0700).")));
+-#endif
++//#if !defined(WIN32) && !defined(__CYGWIN__)
++//	if (stat_buf.st_mode & (S_IRWXG | S_IRWXO))
++//		ereport(FATAL,
++//				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
++//				 errmsg("data directory \"%s\" has group or world access",
++//						DataDir),
++//				 errdetail("Permissions should be u=rwx (0700).")));
++//#endif
+ 
+ 	/* Look for PG_VERSION before looking for pg_control */
+ 	ValidatePgVersion(DataDir);
+diff -ur src/bin/initdb/initdb.c src-mod/bin/initdb/initdb.c
+--- src/bin/initdb/initdb.c	2015-06-09 22:29:38.000000000 +0300
++++ src-mod/bin/initdb/initdb.c	2015-10-01 02:59:33.939829000 +0300
+@@ -795,16 +795,16 @@
+ 	const char *username;
+ 
+ #ifndef WIN32
+-	if (geteuid() == 0)			/* 0 is root's uid */
+-	{
+-		fprintf(stderr,
+-				_("%s: cannot be run as root\n"
+-				  "Please log in (using, e.g., \"su\") as the "
+-				  "(unprivileged) user that will\n"
+-				  "own the server process.\n"),
+-				progname);
+-		exit(1);
+-	}
++	//if (geteuid() == 0)			/* 0 is root's uid */
++	//{
++	//	fprintf(stderr,
++	//			_("%s: cannot be run as root\n"
++	//			  "Please log in (using, e.g., \"su\") as the "
++	//			  "(unprivileged) user that will\n"
++	//			  "own the server process.\n"),
++	//			progname);
++	//	exit(1);
++	//}
+ #endif
+ 
+ 	username = get_user_name_or_exit(progname);
