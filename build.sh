@@ -6,6 +6,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CACHEDIR=$DIR/_cache
 BUILDDIR=$DIR/_build
 POSTGREVER="9.4.4"
+DEVIVEHIVEVER="2.0.7"
+DEVICEHIVEADMINCPVER="2.0.2"
+
+if [ "$1" = "--noarm" ]; then
+  NOARM="1"
+  echo armhf is disabled
+fi
 
 function download() {
   mkdir -p $CACHEDIR
@@ -28,7 +35,9 @@ function mk_postgre() {
   download https://ftp.postgresql.org/pub/source/v$POSTGREVER/postgresql-$POSTGREVER.tar.gz
   unpack postgresql-$POSTGREVER.tar.gz
   (cd $CACHEDIR/postgresql-$POSTGREVER && patch -Np0 -i $DIR/psql-disable-security.patch)
-  build_postgre armv7l arm-linux-gnueabihf
+  if [ -z $NOARM ]; then
+    build_postgre armv7l arm-linux-gnueabihf
+  fi
   build_postgre x86_64 x86_64-linux-gnu
 }
 
@@ -49,7 +58,9 @@ function mk_java() {
 mk_postgre
 
 # Build Java
-mk_java armhf armv7l arm
+if [ -z $NOARM ]; then
+  mk_java armhf armv7l arm
+fi
 mk_java amd64 x86_64 amd64
 
 # Kafka
@@ -58,17 +69,17 @@ mkdir -p $BUILDDIR/kafka
 tar xf $CACHEDIR/kafka_2.10-0.8.2.0.tgz -C $BUILDDIR/kafka --strip-components=1
 
 # DeviceHive
-download https://github.com/devicehive/devicehive-java-server/releases/download/2.0.6/devicehive-2.0.6.jar
-download https://github.com/devicehive/devicehive-java-server/releases/download/2.0.6/devicehive-2.0.6-boot.jar
+download https://github.com/devicehive/devicehive-java-server/releases/download/$DEVIVEHIVEVER/devicehive-$DEVIVEHIVEVER.jar
+download https://github.com/devicehive/devicehive-java-server/releases/download/$DEVIVEHIVEVER/devicehive-$DEVIVEHIVEVER-boot.jar
 mkdir -p $BUILDDIR/devicehive-server
-cp $CACHEDIR/devicehive-2.0.6.jar $BUILDDIR/devicehive-server -n
-cp $CACHEDIR/devicehive-2.0.6-boot.jar $BUILDDIR/devicehive-server -n
+cp $CACHEDIR/devicehive-$DEVIVEHIVEVER.jar $BUILDDIR/devicehive-server/devicehive.jar -n
+cp $CACHEDIR/devicehive-$DEVIVEHIVEVER-boot.jar $BUILDDIR/devicehive-server/devicehive-boot.jar -n
 
 # Copy scripts
 cp $DIR/scripts/* $BUILDDIR -rf
 
 #Admin control panel
-download https://github.com/devicehive/devicehive-admin-console/archive/2.0.2.tar.gz
+download https://github.com/devicehive/devicehive-admin-console/archive/$DEVICEHIVEADMINCPVER.tar.gz
 mkdir -p $BUILDDIR/admincp
-tar xf $CACHEDIR/2.0.2.tar.gz -C $BUILDDIR/admincp --strip-components=1
+tar xf $CACHEDIR/$DEVICEHIVEADMINCPVER.tar.gz -C $BUILDDIR/admincp --strip-components=1
 cp $DIR/config.js $BUILDDIR/admincp/scripts -rf
