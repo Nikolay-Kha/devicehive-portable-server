@@ -68,6 +68,7 @@ cp $CACHEDIR/devicehive-2.0.6-boot.jar $BUILDDIR/devicehive-server -n
 cp $DIR/scripts/* $BUILDDIR -rf
 
 #Admin control panel
-#download https://github.com/devicehive/devicehive-admin-console/archive/2.0.2.tar.gz
-#mkdir -p $BUILDDIR/admin
-#tar xf $CACHEDIR/2.0.2.tar.gz -C $BUILDDIR/admin --strip-components=1
+download https://github.com/devicehive/devicehive-admin-console/archive/2.0.2.tar.gz
+mkdir -p $BUILDDIR/admincp
+tar xf $CACHEDIR/2.0.2.tar.gz -C $BUILDDIR/admincp --strip-components=1
+cp $DIR/config.js $BUILDDIR/admincp/scripts -rf

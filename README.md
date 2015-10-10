@@ -4,9 +4,32 @@ Doesn't require anything to install on target machine. Just run ./start.sh in _b
 #Dependencies:
 sudo apt-get install libc6-dev-armhf-cross cpp-arm-linux-gnueabihf gcc-arm-linux-gnueabihf zlib1g-dev zlib1g-dev:armhf
 
+There is might be a need to install zlib1g-dev:armhf manualy. To do it, type:
+wget http://zlib.net/zlib-1.2.8.tar.gz
+tar xzf zlib-1.2.8.tar.gz
+cd zlib-1.2.8
+./configure --prefix=/usr/arm-linux-gnueabihf
+sed -e "s/CC=gcc/CC=arm-linux-gnueabihf-gcc/" Makefile > tmp.mkf
+sed -e "s/CPP=gcc/CPP=arm-linux-gnueabihf-gcc/" tmp.mkf >  Makefile
+sed -e "s/LDSHARED=gcc/LDSHARED=arm-linux-gnueabihf-gcc/" Makefile > tmp.mkf
+sed -e "s/AR=ar/AR=arm-linux-gnueabihf-ar/" tmp.mkf > Makefile
+sed -e "s/RANLIB=ranlib/RANLIB=arm-linux-gnueabihf-ranlib/" Makefile > tmp.mkf
+cp tmp.mkf Makefile -f
+make -j 8 && make install
+
+LDSHARED=arm-linux-gnueabihf-gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map
+CPP=arm-linux-gnueabihf-gcc -E
+AR=arm-linux-gnueabihf-ar
+RANLIB=arm-linux-gnueabihf-ranlib
+make && sudo make install
+
 #Building
 Install dependencies and run build.sh
 
 #Usage
-After start server will be aviable at http://127.0.0.1:8080/dh/rest you can check info data here - http://127.0.0.1:8080/dh/rest/info  
-Admin console aviable at - TODO
+After server start, REST endpoint will be aviable at http://127.0.0.1:8080/dh/rest  
+You can check info here - http://127.0.0.1:8080/dh/rest/info  
+Admin console aviable at - http://127.0.0.1:8000  
+Login: dhadmin  
+Password: dhadmin_#911
+

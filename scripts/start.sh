@@ -22,6 +22,7 @@ function service() {
 service psql 5432
 service zookeeper 2181
 service kafka 9092
+$DIR/admincp.sh &
 $DIR/devicehive.sh
 
 
