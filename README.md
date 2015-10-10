@@ -16,7 +16,7 @@ sed -e "s/LDSHARED=gcc/LDSHARED=arm-linux-gnueabihf-gcc/" Makefile > tmp.mkf
 sed -e "s/AR=ar/AR=arm-linux-gnueabihf-ar/" tmp.mkf > Makefile
 sed -e "s/RANLIB=ranlib/RANLIB=arm-linux-gnueabihf-ranlib/" Makefile > tmp.mkf
 cp tmp.mkf Makefile -f
-make -j 8 && make install
+make -j 8 && sudo make install
 ```
 
 #Building
