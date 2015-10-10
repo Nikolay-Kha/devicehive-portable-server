@@ -2,7 +2,7 @@
 Doesn't require anything to install on target machine. Just run ./start.sh in _build dir and have fun!
 
 #Dependencies:
-sudo apt-get install libc6-dev-armhf-cross cpp-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
+sudo apt-get install libc6-dev-armhf-cross cpp-arm-linux-gnueabihf gcc-arm-linux-gnueabihf zlib1g-dev zlib1g-dev:armhf
 
 #Building
 Install dependencies and run build.sh
