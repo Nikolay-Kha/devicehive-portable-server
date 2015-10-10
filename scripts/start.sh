@@ -14,7 +14,7 @@ function wait_sevice() {
 
 function service() {
   if ! check_port $2; then
-    ./$1.sh &
+    $DIR/$1.sh &
     wait_sevice $2
   fi
 }
@@ -22,6 +22,6 @@ function service() {
 service psql 5432
 service zookeeper 2181
 service kafka 9092
-./devicehive.sh
+$DIR/devicehive.sh
 
 

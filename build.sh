@@ -28,7 +28,7 @@ function mk_postgre() {
   download https://ftp.postgresql.org/pub/source/v$POSTGREVER/postgresql-$POSTGREVER.tar.gz
   unpack postgresql-$POSTGREVER.tar.gz
   (cd $CACHEDIR/postgresql-$POSTGREVER && patch -Np0 -i $DIR/psql-disable-security.patch)
-  build_postgre armhf arm-linux-gnueabihf
+  build_postgre armv7l arm-linux-gnueabihf
   build_postgre x86_64 x86_64-linux-gnu
 }
 
@@ -49,7 +49,7 @@ function mk_java() {
 mk_postgre
 
 # Build Java
-mk_java armhf armhf arm
+mk_java armhf armv7l arm
 mk_java amd64 x86_64 amd64
 
 # Kafka
