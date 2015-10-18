@@ -6,8 +6,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CACHEDIR=$DIR/_cache
 BUILDDIR=$DIR/_build
 POSTGREVER="9.4.4"
-DEVIVEHIVEVER="2.0.7"
-DEVICEHIVEADMINCPVER="2.0.2"
+DEVIVEHIVEVER="2.0.9"
+DEVICEHIVEADMINCPVER="2.0.3"
 
 if [ "$1" = "--noarm" ]; then
   NOARM="1"
